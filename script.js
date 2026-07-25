@@ -24,14 +24,6 @@ document.getElementById("send-btn").onclick = async () => {
 
     const data = await res.json();
 
-    // AI返信
-    const reply = document.createElement("div");
-    reply.innerHTML = `<span style="color:#f0f">AI</span>: ${data.reply}`;
-    chatBox.appendChild(reply);
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-};
-
 // 取り消し機能
 document.getElementById("undo-btn").onclick = () => {
     if (lastMessageElement) {
