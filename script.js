@@ -13,7 +13,7 @@ document.getElementById("send-btn").onclick = async () => {
     msg.innerHTML = `<span style="color:#0ff">${name}</span>: ${message}`;
     chatBox.appendChild(msg);
 
-    lastMessageElement = msg; // 取り消し用に保存
+    lastMessageElement = msg;
 
     // サーバーへ送信
     const res = await fetch("/send", {
@@ -22,7 +22,23 @@ document.getElementById("send-btn").onclick = async () => {
         body: JSON.stringify({name, message})
     });
 
-    const data = await res.json();
+    // 返信が空でもエラーにならないようにする
+    let data = {};
+    try {
+        data = await res.json();
+    } catch (e) {
+        data.reply = "";
+    }
+
+    // AI返信が空なら何も表示しない
+    if (data.reply) {
+        const reply = document.createElement("div");
+        reply.innerHTML = `<span style="color:#f0f">AI</span>: ${data.reply}`;
+        chatBox.appendChild(reply);
+    }
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+};
 
 // 取り消し機能
 document.getElementById("undo-btn").onclick = () => {
