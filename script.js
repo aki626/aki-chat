@@ -1,35 +1,41 @@
-let userName = localStorage.getItem("userName") || "名無し";
+let lastMessageElement = null;
 
-function saveName() {
-    const name = document.getElementById("nameInput").value;
-    if (name.trim() !== "") {
-        userName = name;
-        localStorage.setItem("userName", name);
-        alert("名前を「" + name + "」に変更したよ！");
-    }
-}
+document.getElementById("send-btn").onclick = async () => {
+    const name = document.getElementById("name").value;
+    const message = document.getElementById("message").value;
 
-function sendMessage() {
-    const msg = document.getElementById("messageInput").value;
+    if (!message) return;
 
-    fetch("https://YOUR-RAILWAY-URL/send", {
+    const chatBox = document.getElementById("chat-box");
+
+    // 自分のメッセージ表示
+    const msg = document.createElement("div");
+    msg.innerHTML = `<span style="color:#0ff">${name}</span>: ${message}`;
+    chatBox.appendChild(msg);
+
+    lastMessageElement = msg; // 取り消し用に保存
+
+    // サーバーへ送信
+    const res = await fetch("/send", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name: userName,
-            message: msg
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        addMessage(userName, msg, data.reply);
-        document.getElementById("messageInput").value = "";
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({name, message})
     });
-}
 
-function addMessage(name, userMsg, botMsg) {
-    const chatBox = document.getElementById("chatBox");
-    chatBox.innerHTML += `<p><strong>${name}：</strong> ${userMsg}</p>`;
-    chatBox.innerHTML += `<p style="color:#4caf50;"><strong>Bot：</strong> ${botMsg}</p>`;
+    const data = await res.json();
+
+    // AI返信
+    const reply = document.createElement("div");
+    reply.innerHTML = `<span style="color:#f0f">AI</span>: ${data.reply}`;
+    chatBox.appendChild(reply);
+
     chatBox.scrollTop = chatBox.scrollHeight;
-}
+};
+
+// 取り消し機能
+document.getElementById("undo-btn").onclick = () => {
+    if (lastMessageElement) {
+        lastMessageElement.remove();
+        lastMessageElement = null;
+    }
+};
