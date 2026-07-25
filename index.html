@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>MDWのチャット</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Neon Chat</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="chat-container">
+    <h1 class="title">⚡ Neon Chat ⚡</h1>
 
-<div class="container">
-    <h1>MDWのチャットアプリ</h1>
+    <div id="chat-box"></div>
 
-    <input id="nameInput" type="text" placeholder="名前を入力してね">
-    <button onclick="saveName()">名前決定</button>
-
-    <div id="chatBox"></div>
-
-    <input id="messageInput" type="text" placeholder="メッセージを入力">
-    <button onclick="sendMessage()">送信</button>
+    <div class="input-area">
+        <input id="name" type="text" placeholder="名前" />
+        <input id="message" type="text" placeholder="メッセージ" />
+        <button id="send-btn">送信</button>
+        <button id="undo-btn">取り消し</button>
+    </div>
 </div>
 
 <script src="script.js"></script>
