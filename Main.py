@@ -10,7 +10,7 @@ def send_message():
     name = data.get("name", "名無し")
     message = data.get("message", "")
 
-    # AI返信なし → 空の返事を返す
+    # AI返信なし
     return jsonify({"reply": ""})
 
 @app.route("/")
