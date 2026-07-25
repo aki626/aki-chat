@@ -4,7 +4,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# メッセージ受け取りだけ（返信はしない）
+# メッセージ受け取りだけ（返信なし）
 @app.route("/send", methods=["POST"])
 def send_message():
     data = request.get_json()
